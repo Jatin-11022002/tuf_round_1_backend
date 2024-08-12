@@ -32,6 +32,10 @@ function handleDisconnect() {
     console.error("MySQL error", err);
     if (err.code === "PROTOCOL_CONNECTION_LOST") {
       handleDisconnect();
+    } else if (err.fatal) {
+      console.error("Fatal MySQL error", err);
+      connection.destroy();
+      handleDisconnect();
     } else {
       throw err;
     }
